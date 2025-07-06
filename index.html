@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Trading Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body{font-family:'Inter',sans-serif;margin:0;padding:0;overflow-x:hidden;background-color:#0d0d1a;color:#e0e0e0}::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#1a202c}::-webkit-scrollbar-thumb{background:#4f46e5;border-radius:5px}::-webkit-scrollbar-thumb:hover{background:#6366f1}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes glow{0%{box-shadow:0 0 5px #6366f1,0 0 10px #6366f1}50%{box-shadow:0 0 20px #6366f1,0 0 30px #6366f1}100%{box-shadow:0 0 5px #6366f1,0 0 10px #6366f1}}@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}@keyframes gridFadeIn{from{opacity:0;transform:scale(.9)}to{opacity:.05;transform:scale(1)}}@keyframes modalFadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}@keyframes modalFadeOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.95)}}.animate-fade-in{animation:fadeIn 1s ease-out forwards}.animate-fade-in-up{animation:fadeInUp .8s ease-out forwards}.delay-100{animation-delay:.1s}.delay-200{animation-delay:.2s}.delay-300{animation-delay:.3s}.delay-400{animation-delay:.4s}.delay-500{animation-delay:.5s}.delay-600{animation-delay:.6s}.glow-on-hover:hover{animation:glow 1.5s infinite alternate}.animated-element{opacity:0;transform:translateY(20px);transition:opacity .8s ease-out,transform .8s ease-out}.animated-element.is-visible{opacity:1;transform:translateY(0)}.animated-element.delay-100{transition-delay:.1s}.animated-element.delay-200{transition-delay:.2s}.animated-element.delay-300{transition-delay:.3s}.animated-element.delay-400{transition-delay:.4s}.animated-element.delay-500{transition-delay:.5s}.animated-element.delay-600{transition-delay:.6s}.grid-bg-pattern{position:absolute;width:100%;height:100%;background-image:linear-gradient(to right,rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.05) 1px,transparent 1px);background-size:40px 40px;opacity:.05;animation:pulse 8s infinite ease-in-out}.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.75);display:flex;justify-content:center;align-items:center;z-index:1000;animation:fadeIn .3s ease-out forwards}.modal-content{background-color:#1a202c;padding:2.5rem;border-radius:1rem;box-shadow:0 10px 25px rgba(0,0,0,.5);width:90%;max-width:450px;position:relative;animation:modalFadeIn .3s ease-out forwards;border:1px solid #4f46e5}.modal-content.closing{animation:modalFadeOut .3s ease-out forwards}.modal-close-button{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;color:#e0e0e0;cursor:pointer;transition:color .2s}.modal-close-button:hover{color:#ff4d4d}.input-glow:focus{outline:none;box-shadow:0 0 0 3px rgba(79,70,229,.5);border-color:#6366f1}@media (max-width:767px){.text-5xl{font-size:3rem}.text-7xl{font-size:4rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.px-8{padding-left:1.5rem;padding-right:1.5rem}.space-x-4>*:not([hidden])~*:not([hidden]){margin-left:1rem}.modal-content{padding:1.5rem}}
+    </style>
+</head>
+<body class="bg-gray-950">
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="https://placehold.co/32x32/4f46e5/ffffff?text=N" alt="Nexus Logo" class="h-8 w-8 mr-2 rounded-md">
+                <span class="text-white text-2xl font-bold tracking-wider">Nexus</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-gray-300 hover:text-indigo-400 transition-colors duration-200 text-lg font-medium">Home</a>
+                <a href="#features" class="text-gray-300 hover:text-indigo-400 transition-colors duration-200 text-lg font-medium">Features</a>
+                <a href="#platforms" class="text-gray-300 hover:text-indigo-400 transition-colors duration-200 text-lg font-medium">Platforms</a>
+                <a href="#about" class="text-gray-300 hover:text-indigo-400 transition-colors duration-200 text-lg font-medium">About Us</a>
+                <a href="#contact" class="text-gray-300 hover:text-indigo-400 transition-colors duration-200 text-lg font-medium">Contact</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-300 hover:text-indigo-400 focus:outline-none focus:text-indigo-400">
+                    <svg id="menu-icon-open" class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    <svg id="menu-icon-close" class="h-8 w-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-gray-900/95 backdrop-blur-sm pb-4">
+            <div class="flex flex-col items-center space-y-4">
+                <a href="#home" class="block text-gray-300 hover:text-indigo-400 py-2 text-lg font-medium mobile-menu-link">Home</a>
+                <a href="#features" class="block text-gray-300 hover:text-indigo-400 py-2 text-lg font-medium mobile-menu-link">Features</a>
+                <a href="#platforms" class="block text-gray-300 hover:text-indigo-400 py-2 text-lg font-medium mobile-menu-link">Platforms</a>
+                <a href="#about" class="block text-gray-300 hover:text-indigo-400 py-2 text-lg font-medium mobile-menu-link">About Us</a>
+                <a href="#contact" class="block text-gray-300 hover:text-indigo-400 py-2 text-lg font-medium mobile-menu-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+    <main id="main-content">
+        <section id="home" class="relative h-screen flex items-center justify-center text-center text-white overflow-hidden bg-gray-950">
+            <div class="absolute inset-0 z-0 overflow-hidden">
+                <div class="grid-bg-pattern animate-grid-fade-in"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-gray-950/70 via-transparent to-gray-900/70"></div>
+            </div>
+            <div class="relative z-10 p-4 max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6 animate-fade-in-up">
+                    <span class="text-indigo-400">Nexus</span> Your Gateway to Advanced Trading
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 mb-8 animate-fade-in-up delay-200">
+                    Unify your crypto and traditional finance trading across multiple platforms with cutting-edge tools and insights.
+                </p>
+                <div class="flex justify-center space-x-4 animate-fade-in-up delay-400">
+                    <button id="get-started-button" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out glow-on-hover">
+                        Get Started
+                    </button>
+                    <button id="learn-more-button" class="bg-transparent border-2 border-indigo-600 text-indigo-400 font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out hover:bg-indigo-600 hover:text-white">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </section>
+        <section id="features" class="py-20 bg-gray-950 relative z-10">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center text-white mb-12 animated-element">Key Features</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-gray-900 p-8 rounded-xl shadow-xl border border-gray-800 transform hover:scale-105 transition-transform duration-300 animated-element delay-100">
+                        <div class="text-indigo-400 mb-4">
+                            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Unified Dashboard</h3>
+                        <p class="text-gray-400">Manage all your assets and trades from a single, intuitive interface. Say goodbye to juggling multiple platforms.</p>
+                    </div>
+                    <div class="bg-gray-900 p-8 rounded-xl shadow-xl border border-gray-800 transform hover:scale-105 transition-transform duration-300 animated-element delay-200">
+                        <div class="text-indigo-400 mb-4">
+                            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Advanced Analytics</h3>
+                        <p class="text-gray-400">Gain deep insights into market trends, portfolio performance, and trading strategies with powerful analytics tools.</p>
+                    </div>
+                    <div class="bg-gray-900 p-8 rounded-xl shadow-xl border border-gray-800 transform hover:scale-105 transition-transform duration-300 animated-element delay-300">
+                        <div class="text-indigo-400 mb-4">
+                            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.592 1L21 12l-4.408 3.592c-.511.582-1.48.908-2.592.908-2.626 0-4.5-1.254-4.5-3.5S9.374 8 12 8z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Secure & Reliable</h3>
+                        <p class="text-gray-400">Your security is our priority. Benefit from enterprise-grade security measures and robust infrastructure.</p>
+                    </div>
+                    <div class="bg-gray-900 p-8 rounded-xl shadow-xl border border-gray-800 transform hover:scale-105 transition-transform duration-300 animated-element delay-400">
+                        <div class="text-indigo-400 mb-4">
+                            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18v-9"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Global Access</h3>
+                        <p class="text-gray-400">Access markets and platforms worldwide, breaking down geographical barriers for your trading ambitions.</p>
+                    </div>
+                    <div class="bg-gray-900 p-8 rounded-xl shadow-xl border border-gray-800 transform hover:scale-105 transition-transform duration-300 animated-element delay-500">
+                        <div class="text-indigo-400 mb-4">
+                            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">24/7 Support</h3>
+                        <p class="text-gray-400">Our dedicated support team is available around the clock to assist you with any queries or issues.</p>
+                    </div>
+                    <div class="bg-gray-900 p-8 rounded-xl shadow-xl border border-gray-800 transform hover:scale-105 transition-transform duration-300 animated-element delay-600">
+                        <div class="text-indigo-400 mb-4">
+                            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">API Integration</h3>
+                        <p class="text-gray-400">Seamlessly connect your existing trading bots and custom strategies via our robust API.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="platforms" class="py-20 bg-gray-900 relative z-10">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center text-white mb-12 animated-element">Supported Platforms</h2>
+                <p class="text-lg text-gray-300 text-center mb-10 animated-element delay-100">
+                    Nexus seamlessly integrates with leading financial and cryptocurrency platforms, providing you with a unified trading experience.
+                </p>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+                    <div class="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 animated-element delay-200">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Binance_logo.svg/1200px-Binance_logo.svg.png" alt="Binance Logo" class="h-16 w-16 object-contain mb-2" onerror="this.onerror=null;this.src='https://placehold.co/64x64/4f46e5/ffffff?text=BINANCE';">
+                        <span class="text-white text-lg font-medium">Binance</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 animated-element delay-300">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Bybit_logo.svg/1200px-Bybit_logo.svg.png" alt="Bybit Logo" class="h-16 w-16 object-contain mb-2" onerror="this.onerror=null;this.src='https://placehold.co/64x64/4f46e5/ffffff?text=BYBIT';">
+                        <span class="text-white text-lg font-medium">Bybit</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 animated-element delay-400">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/1200px-MetaMask_Fox.svg.png" alt="MetaMask Logo" class="h-16 w-16 object-contain mb-2" onerror="this.onerror=null;this.src='https://placehold.co/64x64/4f46e5/ffffff?text=METAMASK';">
+                        <span class="text-white text-lg font-medium">MetaMask</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 animated-element delay-500">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Trust_Wallet_logo.svg/1200px-Trust_Wallet_logo.svg.png" alt="Trust Wallet Logo" class="h-16 w-16 object-contain mb-2" onerror="this.onerror=null;this.src='https://placehold.co/64x64/4f46e5/ffffff?text=TRUST';">
+                        <span class="text-white text-lg font-medium">Trust Wallet</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 animated-element delay-600">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Coinbase_logo.png" alt="Coinbase Logo" class="h-16 w-16 object-contain mb-2" onerror="this.onerror=null;this.src='https://placehold.co/64x64/4f46e5/ffffff?text=COINBASE';">
+                        <span class="text-white text-lg font-medium">Coinbase</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-800 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 animated-element delay-700">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Kraken_exchange_logo.svg/1200px-Kraken_exchange_logo.svg.png" alt="Kraken Logo" class="h-16 w-16 object-contain mb-2" onerror="this.onerror=null;this.src='https://placehold.co/64x64/4f46e5/ffffff?text=KRAKEN';">
+                        <span class="text-white text-lg font-medium">Kraken</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="about" class="py-20 bg-gray-950 relative z-10">
+            <div class="container mx-auto px-4 text-white">
+                <h2 class="text-4xl font-bold text-center mb-12 animated-element">About Nexus</h2>
+                <div class="max-w-3xl mx-auto text-lg text-gray-300 space-y-6 animated-element delay-100">
+                    <p>Nexus was founded on the principle of empowering traders with unparalleled control and insight. In a rapidly evolving financial landscape, managing disparate accounts and platforms can be cumbersome and inefficient. We envisioned a solution that brings everything under one roof, providing a seamless, secure, and intelligent trading environment.</p>
+                    <p>Our team comprises seasoned financial experts, blockchain innovators, and software engineers dedicated to building the future of trading. We are committed to continuous innovation, ensuring Nexus remains at the forefront of technology and user experience.</p>
+                    <p>Join the Nexus community and experience the next generation of trading – where complexity is simplified, and opportunities are amplified.</p>
+                </div>
+            </div>
+        </section>
+        <section id="contact" class="py-20 bg-gray-900 relative z-10">
+            <div class="container mx-auto px-4 text-white">
+                <h2 class="text-4xl font-bold text-center mb-12 animated-element">Contact Us</h2>
+                <div class="max-w-2xl mx-auto bg-gray-800 p-8 rounded-xl shadow-xl border border-gray-700 animated-element delay-100">
+                    <form class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-gray-300 text-sm font-bold mb-2">Name</label>
+                            <input type="text" id="name" name="name" class="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 input-glow" placeholder="Your Name" />
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-300 text-sm font-bold mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 input-glow" placeholder="your@example.com" />
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-300 text-sm font-bold mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" class="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 input-glow" placeholder="Your message..."></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out glow-on-hover">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-gray-950 py-10 text-gray-400 text-center relative z-10">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center items-center mb-4">
+                <img src="https://placehold.co/32x32/4f46e5/ffffff?text=N" alt="Nexus Logo" class="h-6 w-6 mr-2 rounded-md">
+                <span class="text-white text-xl font-bold tracking-wider">Nexus</span>
+            </div>
+            <p class="mb-4">&copy; <span id="current-year"></span> Nexus Trading Platform. All rights reserved.</p>
+            <div class="flex justify-center space-x-6 text-sm">
+                <a href="#" class="hover:text-indigo-400 transition-colors duration-200">Privacy Policy</a>
+                <a href="#" class="hover:text-indigo-400 transition-colors duration-200">Terms of Service</a>
+                <a href="#" class="hover:text-indigo-400 transition-colors duration-200">Disclaimer</a>
+            </div>
+        </div>
+    </footer>
+    <div id="register-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-button" id="close-register-modal">&times;</button>
+            <h2 class="text-3xl font-bold text-white text-center mb-6">Get Started with Nexus</h2>
+            <form id="register-form" class="space-y-5">
+                <div>
+                    <label for="reg-email" class="block text-gray-300 text-sm font-bold mb-2">Email</label>
+                    <input type="email" id="reg-email" name="email" class="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 input-glow" placeholder="your@example.com" required />
+                </div>
+                <div>
+                    <label for="reg-username" class="block text-gray-300 text-sm font-bold mb-2">Username</label>
+                    <input type="text" id="reg-username" name="username" class="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 input-glow" placeholder="Choose a username" required />
+                </div>
+                <div>
+                    <label for="reg-password" class="block text-gray-300 text-sm font-bold mb-2">Password</label>
+                    <input type="password" id="reg-password" name="password" class="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 input-glow" placeholder="Secure password" required />
+                </div>
+                <!-- Phone Number with Country Code Selector -->
+                <div>
+                    <label for="reg-phone-number" class="block text-gray-300 text-sm font-bold mb-2">Phone Number</label>
+                    <div class="flex">
+                        <select id="reg-country-code" class="shadow appearance-none border border-gray-700 rounded-l-lg py-3 px-2 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 input-glow">
+                            <option value="+1">+1 (USA/CAN)</option>
+                            <option value="+44">+44 (UK)</option>
+                            <option value="+234" selected>+234 (Nigeria)</option>
+                            <option value="+49">+49 (Germany)</option>
+                            <option value="+33">+33 (France)</option>
+                            <option value="+81">+81 (Japan)</option>
+                            <option value="+86">+86 (China)</option>
+                            <option value="+91">+91 (India)</option>
+                            <option value="+61">+61 (Australia)</option>
+                            <option value="+55">+55 (Brazil)</option>
+                            <option value="+27">+27 (South Africa)</option>
+                        </select>
+                        <input type="tel" id="reg-phone-number" name="phone" class="shadow appearance-none border border-gray-700 rounded-r-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 input-glow -ml-px" placeholder="e.g., 8012345678" />
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out glow-on-hover w-full">
+                        Register
+                    </button>
+                </div>
+                <p class="text-center text-gray-400 text-sm mt-4">
+                    Already have a Nexus account? <a href="#" id="show-login-modal-link" class="text-indigo-400 hover:underline">Login</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <div id="login-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-button" id="close-login-modal">&times;</button>
+            <h2 class="text-3xl font-bold text-white text-center mb-6">Welcome Back!</h2>
+            <form id="login-form" class="space-y-5">
+                <div>
+                    <label for="login-email-username" class="block text-gray-300 text-sm font-bold mb-2">Email or Username</label>
+                    <input type="text" id="login-email-username" name="email_username" class="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 input-glow" placeholder="your@example.com or username" required />
+                </div>
+                <div>
+                    <label for="login-password" class="block text-gray-300 text-sm font-bold mb-2">Password</label>
+                    <input type="password" id="login-password" name="password" class="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-200 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 input-glow" placeholder="Your password" required />
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out glow-on-hover w-full">
+                        Login
+                    </button>
+                </div>
+                <p class="text-center text-gray-400 text-sm mt-4">
+                    Don't have an account? <a href="#" id="show-register-modal-link" class="text-indigo-400 hover:underline">Register</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <section id="dashboard-section" class="hidden min-h-screen bg-gray-950 text-white flex flex-col items-center justify-center py-20 px-4">
+        <div class="text-center animate-fade-in-up">
+            <h2 class="text-5xl md:text-6xl font-extrabold text-indigo-400 mb-6">Welcome to Your Dashboard!</h2>
+            <p class="text-lg md:text-xl text-gray-300 mb-8">
+                This is your personalized trading hub. Start exploring your unified portfolio and advanced analytics.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-100">
+                    <h3 class="text-2xl font-semibold mb-3">Portfolio Overview</h3>
+                    <p class="text-gray-400">View your total asset value and distribution.</p>
+                </div>
+                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-200">
+                    <h3 class="text-2xl font-semibold mb-3">Live Market Data</h3>
+                    <p class="text-gray-400">Real-time prices and charts for your favorite assets.</p>
+                </div>
+                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-300">
+                    <h3 class="text-2xl font-semibold mb-3">Trade History</h3>
+                    <p class="text-gray-400">Review all your past transactions and performance.</p>
+                </div>
+                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-400">
+                    <h3 class="text-2xl font-semibold mb-3">Alerts & Notifications</h3>
+                    <p class="text-gray-400">Stay informed with custom price alerts and news.</p>
+                </div>
+                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-500">
+                    <h3 class="text-2xl font-semibold mb-3">Settings</h3>
+                    <p class="text-400">Manage your account preferences and security.</p>
+                </div>
+                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-600">
+                    <h3 class="text-2xl font-semibold mb-3">Support</h3>
+                    <p class="text-gray-400">Get help and contact our 24/7 support team.</p>
+                </div>
+            </div>
+            <button id="logout-button" class="mt-10 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out glow-on-hover">
+                Logout
+            </button>
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){document.getElementById('current-year').textContent=(new Date).getFullYear();const e=document.getElementById('navbar');window.addEventListener('scroll',function(){window.scrollY>50?(e.classList.add('bg-gray-900/90','backdrop-blur-md','shadow-lg'),e.classList.remove('bg-transparent')):(e.classList.remove('bg-gray-900/90','backdrop-blur-md','shadow-lg'),e.classList.add('bg-transparent'))});const t=document.getElementById('mobile-menu-button'),o=document.getElementById('mobile-menu'),s=document.getElementById('menu-icon-open'),a=document.getElementById('menu-icon-close'),n=document.querySelectorAll('.mobile-menu-link');t.addEventListener('click',function(){o.classList.toggle('hidden'),s.classList.toggle('hidden'),a.classList.toggle('hidden')});n.forEach(l=>{l.addEventListener('click',function(){o.classList.add('hidden'),s.classList.remove('hidden'),a.classList.add('hidden')})});window.addEventListener('resize',function(){window.innerWidth>=768&&(o.classList.add('hidden'),s.classList.remove('hidden'),a.classList.add('hidden'))});const d=document.querySelectorAll('.animated-element'),c={root:null,rootMargin:'0px',threshold:.1},m=new IntersectionObserver((e,t)=>{e.forEach(e=>{e.isIntersecting&&(e.target.classList.add('is-visible'),t.unobserve(e.target))})},c);d.forEach(e=>{m.observe(e)});const r=document.getElementById('learn-more-button');r&&r.addEventListener('click',function(){const e=document.getElementById('features');e&&e.scrollIntoView({behavior:'smooth'})});const i=document.getElementById('get-started-button'),l=document.getElementById('register-modal'),u=document.getElementById('close-register-modal'),p=document.getElementById('login-modal'),h=document.getElementById('close-login-modal'),g=document.getElementById('show-login-modal-link'),y=document.getElementById('show-register-modal-link'),f=document.getElementById('register-form'),b=document.getElementById('login-form'),_=document.getElementById('main-content'),w=document.getElementById('dashboard-section'),v=document.getElementById('logout-button');function x(e){e.classList.remove('hidden'),e.classList.remove('closing'),document.body.style.overflow='hidden'}function C(e){e.classList.add('closing'),e.addEventListener('animationend',function t(){e.classList.add('hidden'),e.classList.remove('closing'),document.body.style.overflow='',e.removeEventListener('animationend',t)})}i.addEventListener('click',()=>x(l));u.addEventListener('click',()=>C(l));h.addEventListener('click',()=>C(p));g.addEventListener('click',function(e){e.preventDefault(),C(l),setTimeout(()=>x(p),200)});y.addEventListener('click',function(e){e.preventDefault(),C(p),setTimeout(()=>x(l),200)});f.addEventListener('submit',function(e){e.preventDefault();const t=document.getElementById('reg-email').value,o=document.getElementById('reg-username').value,s=document.getElementById('reg-password').value,a=document.getElementById('reg-country-code').value,N=document.getElementById('reg-phone-number').value,P=a+N;console.log('Registering:',{email:t,username:o,password:s,phone:P}),C(l),D()});b.addEventListener('submit',function(e){e.preventDefault();const t=document.getElementById('login-email-username').value,o=document.getElementById('login-password').value;console.log('Logging in:',{emailUsername:t,password:o}),C(p),D()});function D(){_.classList.add('hidden'),w.classList.remove('hidden'),w.querySelectorAll('.animated-element').forEach(e=>{e.classList.add('is-visible')}),window.scrollTo(0,0)}function k(){w.classList.add('hidden'),_.classList.remove('hidden'),window.scrollTo(0,0)}v.addEventListener('click',function(){console.log('Logging out...'),k()})});
+    </script>
+</body>
+</html>
