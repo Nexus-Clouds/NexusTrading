@@ -7,10 +7,181 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body{font-family:'Inter',sans-serif;margin:0;padding:0;overflow-x:hidden;background-color:#0d0d1a;color:#e0e0e0}::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#1a202c}::-webkit-scrollbar-thumb{background:#4f46e5;border-radius:5px}::-webkit-scrollbar-thumb:hover{background:#6366f1}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes glow{0%{box-shadow:0 0 5px #6366f1,0 0 10px #6366f1}50%{box-shadow:0 0 20px #6366f1,0 0 30px #6366f1}100%{box-shadow:0 0 5px #6366f1,0 0 10px #6366f1}}@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}@keyframes gridFadeIn{from{opacity:0;transform:scale(.9)}to{opacity:.05;transform:scale(1)}}@keyframes modalFadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}@keyframes modalFadeOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.95)}}.animate-fade-in{animation:fadeIn 1s ease-out forwards}.animate-fade-in-up{animation:fadeInUp .8s ease-out forwards}.delay-100{animation-delay:.1s}.delay-200{animation-delay:.2s}.delay-300{animation-delay:.3s}.delay-400{animation-delay:.4s}.delay-500{animation-delay:.5s}.delay-600{animation-delay:.6s}.glow-on-hover:hover{animation:glow 1.5s infinite alternate}.animated-element{opacity:0;transform:translateY(20px);transition:opacity .8s ease-out,transform .8s ease-out}.animated-element.is-visible{opacity:1;transform:translateY(0)}.animated-element.delay-100{transition-delay:.1s}.animated-element.delay-200{transition-delay:.2s}.animated-element.delay-300{transition-delay:.3s}.animated-element.delay-400{transition-delay:.4s}.animated-element.delay-500{transition-delay:.5s}.animated-element.delay-600{transition-delay:.6s}.grid-bg-pattern{position:absolute;width:100%;height:100%;background-image:linear-gradient(to right,rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.05) 1px,transparent 1px);background-size:40px 40px;opacity:.05;animation:pulse 8s infinite ease-in-out}.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.75);display:flex;justify-content:center;align-items:center;z-index:1000;animation:fadeIn .3s ease-out forwards}.modal-content{background-color:#1a202c;padding:2.5rem;border-radius:1rem;box-shadow:0 10px 25px rgba(0,0,0,.5);width:90%;max-width:450px;position:relative;animation:modalFadeIn .3s ease-out forwards;border:1px solid #4f46e5}.modal-content.closing{animation:modalFadeOut .3s ease-out forwards}.modal-close-button{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;color:#e0e0e0;cursor:pointer;transition:color .2s}.modal-close-button:hover{color:#ff4d4d}.input-glow:focus{outline:none;box-shadow:0 0 0 3px rgba(79,70,229,.5);border-color:#6366f1}@media (max-width:767px){.text-5xl{font-size:3rem}.text-7xl{font-size:4rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.px-8{padding-left:1.5rem;padding-right:1.5rem}.space-x-4>*:not([hidden])~*:not([hidden]){margin-left:1rem}.modal-content{padding:1.5rem}}
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #0d0d1a;
+            color: #e0e0e0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a202c;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4f46e5;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px #6366f1, 0 0 10px #6366f1; }
+            50% { box-shadow: 0 0 20px #6366f1, 0 0 30px #6366f1; }
+            100% { box-shadow: 0 0 5px #6366f1, 0 0 10px #6366f1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes gridFadeIn {
+            from { opacity: 0; transform: scale(.9); }
+            to { opacity: .05; transform: scale(1); }
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes modalFadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(.95); }
+        }
+
+        /* Utility Classes for Animations */
+        .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+        .animate-fade-in-up { animation: fadeInUp .8s ease-out forwards; }
+        .delay-100 { animation-delay: .1s; }
+        .delay-200 { animation-delay: .2s; }
+        .delay-300 { animation-delay: .3s; }
+        .delay-400 { animation-delay: .4s; }
+        .delay-500 { animation-delay: .5s; }
+        .delay-600 { animation-delay: .6s; }
+
+        .glow-on-hover:hover { animation: glow 1.5s infinite alternate; }
+
+        /* Animated elements for Intersection Observer */
+        .animated-element {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .8s ease-out, transform .8s ease-out;
+        }
+
+        .animated-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animated-element.delay-100 { transition-delay: .1s; }
+        .animated-element.delay-200 { transition-delay: .2s; }
+        .animated-element.delay-300 { transition-delay: .3s; }
+        .animated-element.delay-400 { transition-delay: .4s; }
+        .animated-element.delay-500 { transition-delay: .5s; }
+        .animated-element.delay-600 { transition-delay: .6s; }
+
+        /* Background Grid Pattern */
+        .grid-bg-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to right, rgba(255,255,255,.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: .05;
+            animation: pulse 8s infinite ease-in-out;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn .3s ease-out forwards;
+        }
+
+        .modal-content {
+            background-color: #1a202c;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,.5);
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            animation: modalFadeIn .3s ease-out forwards;
+            border: 1px solid #4f46e5;
+        }
+
+        .modal-content.closing {
+            animation: modalFadeOut .3s ease-out forwards;
+        }
+
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: color .2s;
+        }
+
+        .modal-close-button:hover {
+            color: #ff4d4d;
+        }
+
+        /* Input Glow Effect */
+        .input-glow:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79,70,229,.5);
+            border-color: #6366f1;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 767px) {
+            .text-5xl { font-size: 3rem; }
+            .text-7xl { font-size: 4rem; }
+            .py-3 { padding-top: .75rem; padding-bottom: .75rem; }
+            .px-8 { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .space-x-4 > *:not([hidden]) ~ *:not([hidden]) { margin-left: 1rem; }
+            .modal-content { padding: 1.5rem; }
+        }
     </style>
 </head>
 <body class="bg-gray-950">
+    <!-- Navbar -->
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center">
@@ -41,7 +212,9 @@
             </div>
         </div>
     </nav>
+
     <main id="main-content">
+        <!-- Home Section -->
         <section id="home" class="relative h-screen flex items-center justify-center text-center text-white overflow-hidden bg-gray-950">
             <div class="absolute inset-0 z-0 overflow-hidden">
                 <div class="grid-bg-pattern animate-grid-fade-in"></div>
@@ -64,6 +237,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- Features Section -->
         <section id="features" class="py-20 bg-gray-950 relative z-10">
             <div class="container mx-auto px-4">
                 <h2 class="text-4xl font-bold text-center text-white mb-12 animated-element">Key Features</h2>
@@ -113,6 +288,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- Platforms Section -->
         <section id="platforms" class="py-20 bg-gray-900 relative z-10">
             <div class="container mx-auto px-4">
                 <h2 class="text-4xl font-bold text-center text-white mb-12 animated-element">Supported Platforms</h2>
@@ -147,6 +324,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- About Section -->
         <section id="about" class="py-20 bg-gray-950 relative z-10">
             <div class="container mx-auto px-4 text-white">
                 <h2 class="text-4xl font-bold text-center mb-12 animated-element">About Nexus</h2>
@@ -157,6 +336,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- Contact Section -->
         <section id="contact" class="py-20 bg-gray-900 relative z-10">
             <div class="container mx-auto px-4 text-white">
                 <h2 class="text-4xl font-bold text-center mb-12 animated-element">Contact Us</h2>
@@ -184,6 +365,8 @@
             </div>
         </section>
     </main>
+
+    <!-- Footer -->
     <footer class="bg-gray-950 py-10 text-gray-400 text-center relative z-10">
         <div class="container mx-auto px-4">
             <div class="flex justify-center items-center mb-4">
@@ -198,6 +381,8 @@
             </div>
         </div>
     </footer>
+
+    <!-- Register Modal -->
     <div id="register-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <button class="modal-close-button" id="close-register-modal">&times;</button>
@@ -246,6 +431,8 @@
             </form>
         </div>
     </div>
+
+    <!-- Login Modal -->
     <div id="login-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <button class="modal-close-button" id="close-login-modal">&times;</button>
@@ -270,45 +457,395 @@
             </form>
         </div>
     </div>
+
+    <!-- Deposit Modal -->
+    <div id="deposit-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-button" id="close-deposit-modal">&times;</button>
+            <h2 class="text-3xl font-bold text-white text-center mb-6">Deposit Funds</h2>
+            <p class="text-gray-300 text-center mb-4">Your personalized wallet address:</p>
+            <div class="bg-gray-800 p-4 rounded-lg flex items-center justify-between mb-6 border border-gray-700">
+                <span id="wallet-address" class="text-indigo-400 text-sm md:text-base break-all">0xAbC123DeF456GhI789JkL012MnOPQ345RsT678UvW</span>
+                <button id="copy-address-button" class="ml-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md text-sm">
+                    Copy
+                </button>
+            </div>
+            <p class="text-gray-400 text-center text-sm">
+                Please note: This is an example address for demonstration purposes only and cannot be used for actual transactions.
+            </p>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
     <section id="dashboard-section" class="hidden min-h-screen bg-gray-950 text-white flex flex-col items-center justify-center py-20 px-4">
-        <div class="text-center animate-fade-in-up">
+        <div class="text-center animate-fade-in-up w-full max-w-6xl mx-auto">
             <h2 class="text-5xl md:text-6xl font-extrabold text-indigo-400 mb-6">Welcome to Your Dashboard!</h2>
             <p class="text-lg md:text-xl text-gray-300 mb-8">
                 This is your personalized trading hub. Start exploring your unified portfolio and advanced analytics.
             </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-100">
-                    <h3 class="text-2xl font-semibold mb-3">Portfolio Overview</h3>
-                    <p class="text-gray-400">View your total asset value and distribution.</p>
+
+            <!-- Trading Analytics Section -->
+            <div class="bg-gray-900 p-8 rounded-xl shadow-xl border border-gray-800 mb-8 animated-element delay-100">
+                <h3 class="text-3xl font-bold text-white mb-6">Trading Analytics</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                        <p class="text-gray-400 text-lg">Total Portfolio Value</p>
+                        <p class="text-green-400 text-4xl font-bold">$12,345.67</p>
+                        <p class="text-gray-500 text-sm">+2.5% (24h)</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                        <p class="text-gray-400 text-lg">Daily P&L</p>
+                        <p class="text-green-400 text-4xl font-bold">+$300.50</p>
+                        <p class="text-gray-500 text-sm">Last 24 hours</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                        <p class="text-gray-400 text-lg">Win Rate</p>
+                        <p class="text-indigo-400 text-4xl font-bold">72%</p>
+                        <p class="text-gray-500 text-sm">Overall trades</p>
+                    </div>
                 </div>
-                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-200">
-                    <h3 class="text-2xl font-semibold mb-3">Live Market Data</h3>
-                    <p class="text-gray-400">Real-time prices and charts for your favorite assets.</p>
-                </div>
-                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-300">
-                    <h3 class="text-2xl font-semibold mb-3">Trade History</h3>
-                    <p class="text-gray-400">Review all your past transactions and performance.</p>
-                </div>
-                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-400">
-                    <h3 class="text-2xl font-semibold mb-3">Alerts & Notifications</h3>
-                    <p class="text-gray-400">Stay informed with custom price alerts and news.</p>
-                </div>
-                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-500">
-                    <h3 class="text-2xl font-semibold mb-3">Settings</h3>
-                    <p class="text-400">Manage your account preferences and security.</p>
-                </div>
-                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 animated-element delay-600">
-                    <h3 class="text-2xl font-semibold mb-3">Support</h3>
-                    <p class="text-gray-400">Get help and contact our 24/7 support team.</p>
+                <div class="mt-8">
+                    <h4 class="text-2xl font-semibold text-white mb-4">Performance Chart (Example)</h4>
+                    <div class="bg-gray-800 p-4 rounded-lg flex items-center justify-center h-64">
+                        <p class="text-gray-500">Graph placeholder for market performance.</p>
+                        <!-- Placeholder for a chart library like Chart.js or D3.js -->
+                    </div>
                 </div>
             </div>
-            <button id="logout-button" class="mt-10 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out glow-on-hover">
-                Logout
-            </button>
+
+            <!-- Company Stocks Section -->
+            <div class="bg-gray-900 p-8 rounded-xl shadow-xl border border-gray-800 mb-8 animated-element delay-200">
+                <h3 class="text-3xl font-bold text-white mb-6">Company Stocks</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Tesla -->
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 flex items-center">
+                        <img src="https://placehold.co/40x40/FF0000/FFFFFF?text=TSLA" alt="Tesla Logo" class="h-10 w-10 mr-4 rounded-full">
+                        <div>
+                            <p class="text-white text-xl font-semibold">Tesla (TSLA)</p>
+                            <p class="text-green-400 text-lg">$180.50 <span class="text-sm text-gray-500">(+1.2%)</span></p>
+                        </div>
+                    </div>
+                    <!-- Coca-Cola -->
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 flex items-center">
+                        <img src="https://placehold.co/40x40/FF0000/FFFFFF?text=KO" alt="Coca-Cola Logo" class="h-10 w-10 mr-4 rounded-full">
+                        <div>
+                            <p class="text-white text-xl font-semibold">Coca-Cola (KO)</p>
+                            <p class="text-red-400 text-lg">$60.15 <span class="text-sm text-gray-500">(-0.5%)</span></p>
+                        </div>
+                    </div>
+                    <!-- Apple -->
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 flex items-center">
+                        <img src="https://placehold.co/40x40/000000/FFFFFF?text=AAPL" alt="Apple Logo" class="h-10 w-10 mr-4 rounded-full">
+                        <div>
+                            <p class="text-white text-xl font-semibold">Apple (AAPL)</p>
+                            <p class="text-green-400 text-lg">$175.80 <span class="text-sm text-gray-500">(+0.8%)</span></p>
+                        </div>
+                    </div>
+                    <!-- Samsung -->
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 flex items-center">
+                        <img src="https://placehold.co/40x40/123456/FFFFFF?text=SSNLF" alt="Samsung Logo" class="h-10 w-10 mr-4 rounded-full">
+                        <div>
+                            <p class="text-white text-xl font-semibold">Samsung (SSNLF)</p>
+                            <p class="text-green-400 text-lg">$1200.00 <span class="text-sm text-gray-500">(+0.3%)</span></p>
+                        </div>
+                    </div>
+                    <!-- Microsoft -->
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 flex items-center">
+                        <img src="https://placehold.co/40x40/0078D4/FFFFFF?text=MSFT" alt="Microsoft Logo" class="h-10 w-10 mr-4 rounded-full">
+                        <div>
+                            <p class="text-white text-xl font-semibold">Microsoft (MSFT)</p>
+                            <p class="text-green-400 text-lg">$450.20 <span class="text-sm text-gray-500">(+1.5%)</span></p>
+                        </div>
+                    </div>
+                    <!-- Amazon -->
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 flex items-center">
+                        <img src="https://placehold.co/40x40/FF9900/FFFFFF?text=AMZN" alt="Amazon Logo" class="h-10 w-10 mr-4 rounded-full">
+                        <div>
+                            <p class="text-white text-xl font-semibold">Amazon (AMZN)</p>
+                            <p class="text-red-400 text-lg">$185.70 <span class="text-sm text-gray-500">(-0.7%)</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Action Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mt-10">
+                <button id="deposit-button" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out glow-on-hover">
+                    Deposit Funds
+                </button>
+                <button id="logout-button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out glow-on-hover">
+                    Logout
+                </button>
+            </div>
         </div>
     </section>
+
     <script>
-        document.addEventListener('DOMContentLoaded',function(){document.getElementById('current-year').textContent=(new Date).getFullYear();const e=document.getElementById('navbar');window.addEventListener('scroll',function(){window.scrollY>50?(e.classList.add('bg-gray-900/90','backdrop-blur-md','shadow-lg'),e.classList.remove('bg-transparent')):(e.classList.remove('bg-gray-900/90','backdrop-blur-md','shadow-lg'),e.classList.add('bg-transparent'))});const t=document.getElementById('mobile-menu-button'),o=document.getElementById('mobile-menu'),s=document.getElementById('menu-icon-open'),a=document.getElementById('menu-icon-close'),n=document.querySelectorAll('.mobile-menu-link');t.addEventListener('click',function(){o.classList.toggle('hidden'),s.classList.toggle('hidden'),a.classList.toggle('hidden')});n.forEach(l=>{l.addEventListener('click',function(){o.classList.add('hidden'),s.classList.remove('hidden'),a.classList.add('hidden')})});window.addEventListener('resize',function(){window.innerWidth>=768&&(o.classList.add('hidden'),s.classList.remove('hidden'),a.classList.add('hidden'))});const d=document.querySelectorAll('.animated-element'),c={root:null,rootMargin:'0px',threshold:.1},m=new IntersectionObserver((e,t)=>{e.forEach(e=>{e.isIntersecting&&(e.target.classList.add('is-visible'),t.unobserve(e.target))})},c);d.forEach(e=>{m.observe(e)});const r=document.getElementById('learn-more-button');r&&r.addEventListener('click',function(){const e=document.getElementById('features');e&&e.scrollIntoView({behavior:'smooth'})});const i=document.getElementById('get-started-button'),l=document.getElementById('register-modal'),u=document.getElementById('close-register-modal'),p=document.getElementById('login-modal'),h=document.getElementById('close-login-modal'),g=document.getElementById('show-login-modal-link'),y=document.getElementById('show-register-modal-link'),f=document.getElementById('register-form'),b=document.getElementById('login-form'),_=document.getElementById('main-content'),w=document.getElementById('dashboard-section'),v=document.getElementById('logout-button');function x(e){e.classList.remove('hidden'),e.classList.remove('closing'),document.body.style.overflow='hidden'}function C(e){e.classList.add('closing'),e.addEventListener('animationend',function t(){e.classList.add('hidden'),e.classList.remove('closing'),document.body.style.overflow='',e.removeEventListener('animationend',t)})}i.addEventListener('click',()=>x(l));u.addEventListener('click',()=>C(l));h.addEventListener('click',()=>C(p));g.addEventListener('click',function(e){e.preventDefault(),C(l),setTimeout(()=>x(p),200)});y.addEventListener('click',function(e){e.preventDefault(),C(p),setTimeout(()=>x(l),200)});f.addEventListener('submit',function(e){e.preventDefault();const t=document.getElementById('reg-email').value,o=document.getElementById('reg-username').value,s=document.getElementById('reg-password').value,a=document.getElementById('reg-country-code').value,N=document.getElementById('reg-phone-number').value,P=a+N;console.log('Registering:',{email:t,username:o,password:s,phone:P}),C(l),D()});b.addEventListener('submit',function(e){e.preventDefault();const t=document.getElementById('login-email-username').value,o=document.getElementById('login-password').value;console.log('Logging in:',{emailUsername:t,password:o}),C(p),D()});function D(){_.classList.add('hidden'),w.classList.remove('hidden'),w.querySelectorAll('.animated-element').forEach(e=>{e.classList.add('is-visible')}),window.scrollTo(0,0)}function k(){w.classList.add('hidden'),_.classList.remove('hidden'),window.scrollTo(0,0)}v.addEventListener('click',function(){console.log('Logging out...'),k()})});
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('current-year').textContent = (new Date).getFullYear();
+
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-gray-900/90', 'backdrop-blur-md', 'shadow-lg');
+                    navbar.classList.remove('bg-transparent');
+                } else {
+                    navbar.classList.remove('bg-gray-900/90', 'backdrop-blur-md', 'shadow-lg');
+                    navbar.classList.add('bg-transparent');
+                }
+            });
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+                menuIconOpen.classList.toggle('hidden');
+                menuIconClose.classList.toggle('hidden');
+            });
+
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('hidden');
+                    menuIconOpen.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                });
+            });
+
+            // Close mobile menu on resize if wider than md
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768) {
+                    mobileMenu.classList.add('hidden');
+                    menuIconOpen.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                }
+            });
+
+            // Intersection Observer for animated elements
+            const animatedElements = document.querySelectorAll('.animated-element');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            animatedElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // Learn More button scroll
+            const learnMoreButton = document.getElementById('learn-more-button');
+            if (learnMoreButton) {
+                learnMoreButton.addEventListener('click', function() {
+                    const featuresSection = document.getElementById('features');
+                    if (featuresSection) {
+                        featuresSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }
+
+            // Modal elements
+            const getStartedButton = document.getElementById('get-started-button');
+            const registerModal = document.getElementById('register-modal');
+            const closeRegisterModal = document.getElementById('close-register-modal');
+            const loginModal = document.getElementById('login-modal');
+            const closeLoginModal = document.getElementById('close-login-modal');
+            const showLoginModalLink = document.getElementById('show-login-modal-link');
+            const showRegisterModalLink = document.getElementById('show-register-modal-link');
+            const depositButton = document.getElementById('deposit-button');
+            const depositModal = document.getElementById('deposit-modal');
+            const closeDepositModal = document.getElementById('close-deposit-modal');
+            const copyAddressButton = document.getElementById('copy-address-button');
+            const walletAddressSpan = document.getElementById('wallet-address');
+
+            // Form elements
+            const registerForm = document.getElementById('register-form');
+            const loginForm = document.getElementById('login-form');
+
+            // Section elements
+            const mainContent = document.getElementById('main-content');
+            const dashboardSection = document.getElementById('dashboard-section');
+            const logoutButton = document.getElementById('logout-button');
+
+            // Function to show a modal
+            function showModal(modalElement) {
+                modalElement.classList.remove('hidden');
+                modalElement.classList.remove('closing'); // Ensure closing animation is reset
+                document.body.style.overflow = 'hidden'; // Prevent scrolling background
+            }
+
+            // Function to hide a modal
+            function hideModal(modalElement) {
+                modalElement.classList.add('closing'); // Add closing animation class
+                modalElement.addEventListener('animationend', function handler() {
+                    modalElement.classList.add('hidden');
+                    modalElement.classList.remove('closing');
+                    document.body.style.overflow = ''; // Restore scrolling
+                    modalElement.removeEventListener('animationend', handler); // Remove listener to prevent multiple calls
+                });
+            }
+
+            // Show register modal
+            getStartedButton.addEventListener('click', () => showModal(registerModal));
+            closeRegisterModal.addEventListener('click', () => hideModal(registerModal));
+
+            // Show login modal
+            closeLoginModal.addEventListener('click', () => hideModal(loginModal));
+
+            // Switch between register and login modals
+            showLoginModalLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                hideModal(registerModal);
+                setTimeout(() => showModal(loginModal), 200); // Delay for smooth transition
+            });
+
+            showRegisterModalLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                hideModal(loginModal);
+                setTimeout(() => showModal(registerModal), 200); // Delay for smooth transition
+            });
+
+            // Show deposit modal
+            depositButton.addEventListener('click', () => showModal(depositModal));
+            closeDepositModal.addEventListener('click', () => hideModal(depositModal));
+
+            // Copy wallet address to clipboard
+            copyAddressButton.addEventListener('click', function() {
+                const walletAddress = walletAddressSpan.textContent;
+                const tempInput = document.createElement('textarea'); // Use textarea for better mobile compatibility
+                tempInput.value = walletAddress;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy'); // Deprecated but widely supported for iframes
+                document.body.removeChild(tempInput);
+                alertMessage('Wallet address copied to clipboard!'); // Use a custom message box later
+            });
+
+            // Custom alert/message box (replace console.log and native alerts)
+            function alertMessage(message, type = 'info') {
+                const messageBox = document.createElement('div');
+                messageBox.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg text-white z-[1001] animate-fade-in`;
+                if (type === 'success') {
+                    messageBox.classList.add('bg-green-600');
+                } else if (type === 'error') {
+                    messageBox.classList.add('bg-red-600');
+                } else {
+                    messageBox.classList.add('bg-indigo-600');
+                }
+                messageBox.textContent = message;
+                document.body.appendChild(messageBox);
+                setTimeout(() => {
+                    messageBox.classList.add('animate-fade-out');
+                    messageBox.addEventListener('animationend', () => messageBox.remove());
+                }, 3000);
+            }
+
+            // Function to switch to dashboard view
+            function showDashboard() {
+                mainContent.classList.add('hidden');
+                dashboardSection.classList.remove('hidden');
+                // Trigger animations for dashboard elements
+                dashboardSection.querySelectorAll('.animated-element').forEach(el => {
+                    el.classList.add('is-visible');
+                });
+                window.scrollTo(0, 0); // Scroll to top of dashboard
+            }
+
+            // Function to switch back to main content view
+            function showMainContent() {
+                dashboardSection.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+                window.scrollTo(0, 0); // Scroll to top of main content
+            }
+
+            // --- Local Storage User Management ---
+
+            // Check if user is already logged in on page load
+            function checkLoginStatus() {
+                const loggedInUser = localStorage.getItem('loggedInUser');
+                if (loggedInUser) {
+                    showDashboard();
+                    alertMessage(`Welcome back, ${loggedInUser}!`, 'success');
+                }
+            }
+            checkLoginStatus(); // Call on DOMContentLoaded
+
+            // Register form submission
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('reg-email').value;
+                const username = document.getElementById('reg-username').value;
+                const password = document.getElementById('reg-password').value;
+                const countryCode = document.getElementById('reg-country-code').value;
+                const phoneNumber = document.getElementById('reg-phone-number').value;
+                const fullPhoneNumber = countryCode + phoneNumber;
+
+                // Basic validation
+                if (!email || !username || !password || !phoneNumber) {
+                    alertMessage('Please fill in all registration fields.', 'error');
+                    return;
+                }
+
+                // Check if user already exists
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const userExists = users.some(user => user.email === email || user.username === username);
+
+                if (userExists) {
+                    alertMessage('User with this email or username already exists.', 'error');
+                    return;
+                }
+
+                const newUser = { email, username, password, phone: fullPhoneNumber };
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('loggedInUser', username); // Auto-login after registration
+
+                alertMessage('Registration successful! Welcome to Nexus.', 'success');
+                hideModal(registerModal);
+                showDashboard();
+            });
+
+            // Login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const emailUsername = document.getElementById('login-email-username').value;
+                const password = document.getElementById('login-password').value;
+
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const user = users.find(u => (u.email === emailUsername || u.username === emailUsername) && u.password === password);
+
+                if (user) {
+                    localStorage.setItem('loggedInUser', user.username); // Store username for display
+                    alertMessage(`Login successful! Welcome, ${user.username}.`, 'success');
+                    hideModal(loginModal);
+                    showDashboard();
+                } else {
+                    alertMessage('Invalid email/username or password.', 'error');
+                }
+            });
+
+            // Logout button
+            logoutButton.addEventListener('click', function() {
+                localStorage.removeItem('loggedInUser'); // Clear logged in user
+                alertMessage('You have been logged out.', 'info');
+                showMainContent();
+            });
+        });
     </script>
 </body>
 </html>
