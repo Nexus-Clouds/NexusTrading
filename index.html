@@ -6,6 +6,8 @@
     <title>Nexus Trading Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Chart.js library for interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -70,6 +72,16 @@
         @keyframes modalFadeOut {
             from { opacity: 1; transform: scale(1); }
             to { opacity: 0; transform: scale(.95); }
+        }
+
+        /* New animations for alert messages */
+        @keyframes messageFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes messageFadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
         }
 
         /* Utility Classes for Animations */
@@ -169,6 +181,33 @@
             border-color: #6366f1;
         }
 
+        /* Message Box Animations */
+        .message-box-animate-in { animation: messageFadeIn 0.3s ease-out forwards; }
+        .message-box-animate-out { animation: messageFadeOut 0.5s ease-out forwards; }
+
+        /* Fullscreen Chart Specific Styles */
+        .fullscreen-chart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0d0d1a; /* Dark background for full screen */
+            z-index: 10000; /* Ensure it's on top */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .fullscreen-chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 767px) {
             .text-5xl { font-size: 3rem; }
@@ -177,6 +216,9 @@
             .px-8 { padding-left: 1.5rem; padding-right: 1.5rem; }
             .space-x-4 > *:not([hidden]) ~ *:not([hidden]) { margin-left: 1rem; }
             .modal-content { padding: 1.5rem; }
+            .fullscreen-chart-container {
+                padding: 0.5rem; /* Less padding on small screens */
+            }
         }
     </style>
 </head>
@@ -208,7 +250,7 @@
                 <a href="#features" class="block text-gray-300 hover:text-indigo-400 py-2 text-lg font-medium mobile-menu-link">Features</a>
                 <a href="#platforms" class="block text-gray-300 hover:text-indigo-400 py-2 text-lg font-medium mobile-menu-link">Platforms</a>
                 <a href="#about" class="block text-gray-300 hover:text-indigo-400 py-2 text-lg font-medium mobile-menu-link">About Us</a>
-                <a href="#contact" class="block text-gray-300 hover:text-indigo-400 py-2 text-lg font-medium mobile-menu-link">Contact</a>
+                <a href="#contact" class="block text-gray-300 hover:text-indigo-400 py-2 text-lg font-medium">Contact</a>
             </div>
         </div>
     </nav>
@@ -489,37 +531,70 @@
                 <h3 class="text-3xl font-bold text-white mb-6">Trading Analytics</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                        <p class="text-gray-400 text-lg">Main Balance</p>
+                        <p id="main-balance" class="text-indigo-400 text-4xl font-bold">$0.00</p>
+                        <p class="text-gray-500 text-sm">Available funds</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
                         <p class="text-gray-400 text-lg">Total Portfolio Value</p>
-                        <p class="text-green-400 text-4xl font-bold">$12,345.67</p>
-                        <p class="text-gray-500 text-sm">+2.5% (24h)</p>
+                        <p id="total-portfolio-value" class="text-green-400 text-4xl font-bold">$0.00</p>
+                        <p class="text-gray-500 text-sm">Overall value</p>
                     </div>
                     <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
                         <p class="text-gray-400 text-lg">Daily P&L</p>
-                        <p class="text-green-400 text-4xl font-bold">+$300.50</p>
+                        <p id="daily-pnl" class="text-green-400 text-4xl font-bold">$0.00</p>
                         <p class="text-gray-500 text-sm">Last 24 hours</p>
                     </div>
                     <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
                         <p class="text-gray-400 text-lg">Win Rate</p>
-                        <p class="text-indigo-400 text-4xl font-bold">72%</p>
+                        <p id="win-rate" class="text-indigo-400 text-4xl font-bold">N/A</p>
                         <p class="text-gray-500 text-sm">Overall trades</p>
                     </div>
                 </div>
                 <div class="mt-8">
-                    <h4 class="text-2xl font-semibold text-white mb-4">Performance Chart (Example)</h4>
-                    <div class="bg-gray-800 p-4 rounded-lg flex items-center justify-center h-64">
-                        <p class="text-gray-500">Graph placeholder for market performance.</p>
-                        <!-- Placeholder for a chart library like Chart.js or D3.js -->
+                    <h4 class="text-2xl font-semibold text-white mb-4">Live Performance Chart</h4>
+                    <div class="flex flex-col md:flex-row items-center justify-center mb-6 gap-4">
+                        <label for="company-select" class="text-gray-300 text-lg">Select Company:</label>
+                        <select id="company-select" class="bg-gray-700 border border-gray-600 text-white rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="TSLA">Tesla (TSLA)</option>
+                            <option value="KO">Coca-Cola (KO)</option>
+                            <option value="AAPL">Apple (AAPL)</option>
+                            <option value="SSNLF">Samsung (SSNLF)</option>
+                            <option value="MSFT">Microsoft (MSFT)</option>
+                            <option value="AMZN">Amazon (AMZN)</option>
+                        </select>
+                        <button id="fullscreen-chart-button" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-colors duration-200">
+                            <svg class="h-5 w-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4M4 20l5-5m11 5v-4m0 4h-4m4 0l-5-5"></path></svg>
+                            Full Screen
+                        </button>
+                    </div>
+                    <div id="chart-wrapper" class="bg-gray-800 p-4 rounded-lg flex items-center justify-center h-96 border border-gray-700 relative">
+                        <canvas id="performanceChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Company Stocks Section -->
+            <!-- Trade Actions Section -->
             <div class="bg-gray-900 p-8 rounded-xl shadow-xl border border-gray-800 mb-8 animated-element delay-200">
+                <h3 class="text-3xl font-bold text-white mb-6">Trade Actions</h3>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                    <input type="number" id="trade-amount" placeholder="Amount to trade (USD)" min="1" class="w-full md:w-auto flex-grow bg-gray-700 border border-gray-600 text-white rounded-md py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 input-glow" />
+                    <button id="buy-button" class="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out">
+                        Buy
+                    </button>
+                    <button id="sell-button" class="w-full md:w-auto bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out">
+                        Sell
+                    </button>
+                </div>
+            </div>
+
+            <!-- Company Stocks Section -->
+            <div class="bg-gray-900 p-8 rounded-xl shadow-xl border border-gray-800 mb-8 animated-element delay-300">
                 <h3 class="text-3xl font-bold text-white mb-6">Company Stocks</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Tesla -->
                     <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 flex items-center">
-                        <img src="https://placehold.co/40x40/FF0000/FFFFFF?text=TSLA" alt="Tesla Logo" class="h-10 w-10 mr-4 rounded-full">
+                        <img src="https://placehold.co/40x40/FF4500/FFFFFF?text=TSLA" alt="Tesla Logo" class="h-10 w-10 mr-4 rounded-full">
                         <div>
                             <p class="text-white text-xl font-semibold">Tesla (TSLA)</p>
                             <p class="text-green-400 text-lg">$180.50 <span class="text-sm text-gray-500">(+1.2%)</span></p>
@@ -535,7 +610,7 @@
                     </div>
                     <!-- Apple -->
                     <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 flex items-center">
-                        <img src="https://placehold.co/40x40/000000/FFFFFF?text=AAPL" alt="Apple Logo" class="h-10 w-10 mr-4 rounded-full">
+                        <img src="https://placehold.co/40x40/A2AAAD/FFFFFF?text=AAPL" alt="Apple Logo" class="h-10 w-10 mr-4 rounded-full">
                         <div>
                             <p class="text-white text-xl font-semibold">Apple (AAPL)</p>
                             <p class="text-green-400 text-lg">$175.80 <span class="text-sm text-gray-500">(+0.8%)</span></p>
@@ -579,6 +654,21 @@
             </div>
         </div>
     </section>
+
+    <!-- Fullscreen Chart Overlay (hidden by default) -->
+    <div id="fullscreen-chart-overlay" class="fullscreen-chart-container hidden">
+        <div class="relative w-full h-full flex flex-col items-center justify-center">
+            <canvas id="fullscreenPerformanceChart"></canvas>
+            <!-- Mobile Exit Button -->
+            <button id="exit-fullscreen-mobile" class="absolute top-4 right-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full shadow-lg z-20 md:hidden">
+                &times; Close
+            </button>
+            <!-- PC Exit Instruction -->
+            <p id="exit-fullscreen-pc" class="absolute bottom-4 text-gray-400 text-lg hidden md:block z-20">
+                Press <span class="font-bold text-white">ESC</span> to exit full screen
+            </p>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -682,6 +772,30 @@
             const dashboardSection = document.getElementById('dashboard-section');
             const logoutButton = document.getElementById('logout-button');
 
+            // Dashboard value elements
+            const mainBalanceSpan = document.getElementById('main-balance'); // New
+            const totalPortfolioValueSpan = document.getElementById('total-portfolio-value');
+            const dailyPnlSpan = document.getElementById('daily-pnl');
+            const winRateSpan = document.getElementById('win-rate');
+
+            // Trade action elements
+            const tradeAmountInput = document.getElementById('trade-amount');
+            const buyButton = document.getElementById('buy-button');
+            const sellButton = document.getElementById('sell-button');
+
+            // Chart elements
+            const companySelect = document.getElementById('company-select');
+            const chartWrapper = document.getElementById('chart-wrapper');
+            const fullscreenChartButton = document.getElementById('fullscreen-chart-button');
+            const fullscreenChartOverlay = document.getElementById('fullscreen-chart-overlay');
+            const exitFullscreenMobileButton = document.getElementById('exit-fullscreen-mobile');
+            const exitFullscreenPcText = document.getElementById('exit-fullscreen-pc');
+
+            let performanceChart = null; // To hold the Chart.js instance
+            let fullscreenPerformanceChart = null; // To hold the fullscreen Chart.js instance
+            let chartUpdateInterval = null; // To hold the interval for real-time updates
+            let dailyPerformanceInterval = null; // To hold the interval for daily performance updates
+
             // Function to show a modal
             function showModal(modalElement) {
                 modalElement.classList.remove('hidden');
@@ -698,6 +812,14 @@
                     document.body.style.overflow = ''; // Restore scrolling
                     modalElement.removeEventListener('animationend', handler); // Remove listener to prevent multiple calls
                 });
+                // Fallback: Ensure modal is hidden even if animationend doesn't fire reliably
+                setTimeout(() => {
+                    if (!modalElement.classList.contains('hidden')) {
+                        modalElement.classList.add('hidden');
+                        modalElement.classList.remove('closing');
+                        document.body.style.overflow = '';
+                    }
+                }, 350); // Slightly longer than modalFadeOut animation duration (0.3s)
             }
 
             // Show register modal
@@ -722,7 +844,18 @@
 
             // Show deposit modal
             depositButton.addEventListener('click', () => showModal(depositModal));
-            closeDepositModal.addEventListener('click', () => hideModal(depositModal));
+            closeDepositModal.addEventListener('click', () => {
+                hideModal(depositModal);
+                // Set deposit made flag when deposit modal is closed
+                localStorage.setItem('hasMadeDeposit', 'true');
+                // Initialize portfolio values if this is the first deposit
+                const currentPortfolio = getPortfolio();
+                if (currentPortfolio.currentBalance === 0) {
+                    setPortfolio(5000, 0, 0, 0, 0); // Start with a base of $5000 for demonstration
+                }
+                updateDashboardAnalytics(); // Update analytics after deposit interaction
+                startDailyPerformanceSimulation(); // Start daily simulation after deposit
+            });
 
             // Copy wallet address to clipboard
             copyAddressButton.addEventListener('click', function() {
@@ -733,13 +866,23 @@
                 tempInput.select();
                 document.execCommand('copy'); // Deprecated but widely supported for iframes
                 document.body.removeChild(tempInput);
-                alertMessage('Wallet address copied to clipboard!'); // Use a custom message box later
+                alertMessage('Wallet address copied to clipboard!', 'success');
+                localStorage.setItem('hasMadeDeposit', 'true'); // Set deposit made flag
+                // Initialize portfolio values if this is the first deposit
+                const currentPortfolio = getPortfolio();
+                if (currentPortfolio.currentBalance === 0) {
+                    setPortfolio(5000, 0, 0, 0, 0); // Start with a base of $5000 for demonstration
+                }
+                updateDashboardAnalytics(); // Update analytics after copy
+                hideModal(depositModal); // Close modal after copying
+                startDailyPerformanceSimulation(); // Start daily simulation after deposit
             });
 
             // Custom alert/message box (replace console.log and native alerts)
             function alertMessage(message, type = 'info') {
                 const messageBox = document.createElement('div');
-                messageBox.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg text-white z-[1001] animate-fade-in`;
+                // Use new animation classes for messages
+                messageBox.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg text-white z-[1001] message-box-animate-in`;
                 if (type === 'success') {
                     messageBox.classList.add('bg-green-600');
                 } else if (type === 'error') {
@@ -749,10 +892,477 @@
                 }
                 messageBox.textContent = message;
                 document.body.appendChild(messageBox);
+
+                // Make it disappear after a few seconds with animation
                 setTimeout(() => {
-                    messageBox.classList.add('animate-fade-out');
-                    messageBox.addEventListener('animationend', () => messageBox.remove());
-                }, 3000);
+                    messageBox.classList.add('message-box-animate-out'); // Add fade-out animation class
+                    messageBox.addEventListener('animationend', function handler() {
+                        messageBox.remove(); // Remove element after animation
+                        messageBox.removeEventListener('animationend', handler); // Clean up listener
+                    });
+                }, 3000); // Message visible for 3 seconds before fading out
+            }
+
+            // --- Portfolio Management using LocalStorage ---
+            function getPortfolio() {
+                const portfolio = JSON.parse(localStorage.getItem('userPortfolio')) || {
+                    currentBalance: 0, // This is the main balance / total portfolio value
+                    dailyPL: 0,
+                    winRate: 0,
+                    lastTradeResult: null, // 'win' or 'loss' for win rate calculation
+                    totalTrades: 0,
+                    winningTrades: 0
+                };
+                return portfolio;
+            }
+
+            function setPortfolio(currentBalance, dailyPL, winRate, totalTrades, winningTrades, lastTradeResult = null) {
+                const portfolio = getPortfolio();
+                portfolio.currentBalance = parseFloat(currentBalance.toFixed(2));
+                portfolio.dailyPL = parseFloat(dailyPL.toFixed(2));
+                portfolio.winRate = parseFloat(winRate.toFixed(2)); // Ensure winRate is a number
+                portfolio.totalTrades = totalTrades;
+                portfolio.winningTrades = winningTrades;
+
+                if (lastTradeResult !== null) {
+                    portfolio.totalTrades++;
+                    if (lastTradeResult === 'win') {
+                        portfolio.winningTrades++;
+                    }
+                    portfolio.winRate = portfolio.totalTrades > 0 ? (portfolio.winningTrades / portfolio.totalTrades * 100).toFixed(2) : 0;
+                }
+                localStorage.setItem('userPortfolio', JSON.stringify(portfolio));
+            }
+
+            // Function to update dashboard analytics based on deposit status and portfolio
+            function updateDashboardAnalytics() {
+                const hasMadeDeposit = localStorage.getItem('hasMadeDeposit') === 'true';
+                const portfolio = getPortfolio();
+
+                if (hasMadeDeposit && portfolio.currentBalance > 0) {
+                    mainBalanceSpan.textContent = `$${portfolio.currentBalance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    totalPortfolioValueSpan.textContent = `$${portfolio.currentBalance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    dailyPnlSpan.textContent = `${portfolio.dailyPL >= 0 ? '+' : '-'}$${Math.abs(portfolio.dailyPL).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    dailyPnlSpan.classList.toggle('text-green-400', portfolio.dailyPL >= 0);
+                    dailyPnlSpan.classList.toggle('text-red-400', portfolio.dailyPL < 0);
+                    winRateSpan.textContent = `${portfolio.winRate}%`;
+                } else {
+                    mainBalanceSpan.textContent = '$0.00';
+                    totalPortfolioValueSpan.textContent = '$0.00';
+                    dailyPnlSpan.textContent = '$0.00';
+                    dailyPnlSpan.classList.remove('text-green-400', 'text-red-400');
+                    winRateSpan.textContent = 'N/A';
+                }
+            }
+
+            // --- Chart.js Integration ---
+            const companyChartData = {
+                'TSLA': {
+                    label: 'Tesla (TSLA)',
+                    data: [170, 172, 171, 175, 178, 180, 182, 180, 183, 185, 182, 180, 181, 180.50],
+                    borderColor: 'rgb(255, 69, 0)', // Orange-red
+                    backgroundColor: 'rgba(255, 69, 0, 0.2)'
+                },
+                'KO': {
+                    label: 'Coca-Cola (KO)',
+                    data: [58, 59, 60, 61, 60.5, 60.15, 59.8, 60.2, 60.5, 60.1, 59.9, 60.15],
+                    borderColor: 'rgb(255, 0, 0)', // Red
+                    backgroundColor: 'rgba(255, 0, 0, 0.2)'
+                },
+                'AAPL': {
+                    label: 'Apple (AAPL)',
+                    data: [170, 171, 172, 173, 174, 175, 175.5, 175.8, 175.2, 176, 176.5, 175.80],
+                    borderColor: 'rgb(162, 170, 173)', // Grey
+                    backgroundColor: 'rgba(162, 170, 173, 0.2)'
+                },
+                'SSNLF': {
+                    label: 'Samsung (SSNLF)',
+                    data: [1190, 1195, 1200, 1205, 1202, 1200, 1198, 1201, 1203, 1200, 1200.5, 1200.00],
+                    borderColor: 'rgb(18, 52, 86)', // Dark Blue
+                    backgroundColor: 'rgba(18, 52, 86, 0.2)'
+                },
+                'MSFT': {
+                    label: 'Microsoft (MSFT)',
+                    data: [440, 442, 445, 448, 450, 452, 450.5, 451, 450.2, 450.8, 451.5, 450.20],
+                    borderColor: 'rgb(0, 120, 212)', // Microsoft Blue
+                    backgroundColor: 'rgba(0, 120, 212, 0.2)'
+                },
+                'AMZN': {
+                    label: 'Amazon (AMZN)',
+                    data: [180, 182, 185, 188, 187, 186, 185.5, 185.7, 184.9, 185.2, 185.70],
+                    borderColor: 'rgb(255, 153, 0)', // Amazon Orange
+                    backgroundColor: 'rgba(255, 153, 0, 0.2)'
+                }
+            };
+
+            // Function to generate time labels for the chart
+            function generateTimeLabels(numPoints) {
+                const labels = [];
+                const now = new Date();
+                for (let i = numPoints - 1; i >= 0; i--) {
+                    const date = new Date(now.getTime() - i * 5 * 1000); // 5 seconds interval
+                    labels.push(date.toLocaleTimeString());
+                }
+                return labels;
+            }
+
+            // Function to initialize the chart
+            function initializeChart(canvasId, companyCode) {
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                const initialData = companyChartData[companyCode];
+                const labels = generateTimeLabels(initialData.data.length);
+
+                // Destroy existing chart instance if any on this canvas
+                let chartToDestroy = null;
+                if (canvasId === 'performanceChart' && performanceChart) {
+                    chartToDestroy = performanceChart;
+                } else if (canvasId === 'fullscreenPerformanceChart' && fullscreenPerformanceChart) {
+                    chartToDestroy = fullscreenPerformanceChart;
+                }
+
+                if (chartToDestroy) {
+                    chartToDestroy.destroy();
+                }
+
+                const newChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: initialData.label,
+                            data: [...initialData.data], // Use a copy of the data
+                            borderColor: initialData.borderColor,
+                            backgroundColor: initialData.backgroundColor,
+                            borderWidth: 2,
+                            tension: 0.3, // Smooth lines
+                            pointRadius: 0, // No points
+                            fill: true, // Fill area under the line
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                labels: {
+                                    color: '#e0e0e0', // Legend text color
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(26, 32, 44, 0.8)', // Darker background for tooltips
+                                titleColor: '#e0e0e0',
+                                bodyColor: '#e0e0e0',
+                                borderColor: '#4f46e5',
+                                borderWidth: 1,
+                                displayColors: false,
+                            }
+                        },
+                        scales: {
+                            x: {
+                                type: 'category', // Use 'category' for time strings
+                                ticks: {
+                                    color: '#a0a0a0', // X-axis tick color
+                                    maxRotation: 0,
+                                    minRotation: 0,
+                                    autoSkip: true,
+                                    maxTicksLimit: 6 // Limit number of ticks for cleaner look
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.05)' // Grid line color
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#a0a0a0', // Y-axis tick color
+                                    callback: function(value) {
+                                        return '$' + value.toFixed(2); // Format Y-axis labels as currency
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.05)' // Grid line color
+                                }
+                            }
+                        }
+                    }
+                });
+
+                if (canvasId === 'performanceChart') {
+                    performanceChart = newChart;
+                } else if (canvasId === 'fullscreenPerformanceChart') {
+                    fullscreenPerformanceChart = newChart;
+                }
+                return newChart;
+            }
+
+            // Function to update chart data (simulate real-time)
+            function updateChartData() {
+                const currentCompanyCode = companySelect.value;
+                const initialData = companyChartData[currentCompanyCode];
+
+                // Update the main chart
+                if (performanceChart) {
+                    const currentData = performanceChart.data.datasets[0].data;
+                    const currentLabels = performanceChart.data.labels;
+                    const lastValue = currentData[currentData.length - 1] || initialData.data[initialData.data.length - 1];
+                    const newValue = lastValue + (Math.random() * 2 - 1) * (lastValue * 0.005); // +/- 0.5% fluctuation
+                    const newTimeLabel = new Date().toLocaleTimeString();
+
+                    currentData.push(parseFloat(newValue.toFixed(2)));
+                    currentLabels.push(newTimeLabel);
+
+                    if (currentData.length > 20) { // Keep a fixed number of data points (e.g., 20)
+                        currentData.shift();
+                        currentLabels.shift();
+                    }
+                    performanceChart.update();
+                }
+
+                // Update the fullscreen chart if it exists
+                if (fullscreenPerformanceChart) {
+                    const currentData = fullscreenPerformanceChart.data.datasets[0].data;
+                    const currentLabels = fullscreenPerformanceChart.data.labels;
+                    const lastValue = currentData[currentData.length - 1] || initialData.data[initialData.data.length - 1];
+                    const newValue = lastValue + (Math.random() * 2 - 1) * (lastValue * 0.005); // +/- 0.5% fluctuation
+                    const newTimeLabel = new Date().toLocaleTimeString();
+
+                    currentData.push(parseFloat(newValue.toFixed(2)));
+                    currentLabels.push(newTimeLabel);
+
+                    if (currentData.length > 20) { // Keep a fixed number of data points (e.g., 20)
+                        currentData.shift();
+                        currentLabels.shift();
+                    }
+                    fullscreenPerformanceChart.update();
+                }
+            }
+
+            // Event listener for company selection change
+            companySelect.addEventListener('change', function() {
+                const selectedCompany = this.value;
+                initializeChart('performanceChart', selectedCompany);
+                if (document.fullscreenElement) { // If already in fullscreen, re-initialize that too
+                    initializeChart('fullscreenPerformanceChart', selectedCompany);
+                }
+                // Reset and restart the real-time update interval for the new company
+                clearInterval(chartUpdateInterval);
+                chartUpdateInterval = setInterval(updateChartData, 2000); // Update every 2 seconds
+            });
+
+            // Function to start/stop chart updates based on dashboard visibility
+            function toggleChartUpdates(start) {
+                if (start) {
+                    if (!performanceChart) { // Initialize main chart if not already
+                        initializeChart('performanceChart', companySelect.value);
+                    }
+                    if (!chartUpdateInterval) { // Start interval if not already running
+                        chartUpdateInterval = setInterval(updateChartData, 2000); // Update every 2 seconds
+                    }
+                } else {
+                    clearInterval(chartUpdateInterval);
+                    chartUpdateInterval = null;
+                }
+            }
+
+            // --- Fullscreen Logic ---
+            fullscreenChartButton.addEventListener('click', () => {
+                if (chartWrapper.requestFullscreen) {
+                    chartWrapper.requestFullscreen();
+                } else if (chartWrapper.mozRequestFullScreen) { /* Firefox */
+                    chartWrapper.mozRequestFullScreen();
+                } else if (chartWrapper.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                    chartWrapper.webkitRequestFullscreen();
+                } else if (chartWrapper.msRequestFullscreen) { /* IE/Edge */
+                    chartWrapper.msRequestFullscreen();
+                }
+            });
+
+            // Handle fullscreen change events
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+            document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+            function handleFullscreenChange() {
+                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                    // Entered fullscreen
+                    fullscreenChartOverlay.classList.remove('hidden');
+                    // Move the canvas to the fullscreen overlay
+                    const originalCanvas = document.getElementById('performanceChart');
+                    const fullscreenCanvas = document.getElementById('fullscreenPerformanceChart');
+                    const selectedCompany = companySelect.value;
+
+                    // Re-initialize chart on the fullscreen canvas with the current data
+                    initializeChart('fullscreenPerformanceChart', selectedCompany);
+                    // Copy current data from the main chart to the fullscreen chart if available
+                    if (performanceChart && fullscreenPerformanceChart) {
+                        fullscreenPerformanceChart.data.labels = [...performanceChart.data.labels];
+                        fullscreenPerformanceChart.data.datasets[0].data = [...performanceChart.data.datasets[0].data];
+                        fullscreenPerformanceChart.update();
+                    }
+
+                    // Show appropriate exit message/button
+                    if (window.innerWidth < 768) { // Simple check for mobile
+                        exitFullscreenMobileButton.classList.remove('hidden');
+                        exitFullscreenPcText.classList.add('hidden');
+                    } else {
+                        exitFullscreenMobileButton.classList.add('hidden');
+                        exitFullscreenPcText.classList.remove('hidden');
+                    }
+
+                } else {
+                    // Exited fullscreen
+                    fullscreenChartOverlay.classList.add('hidden');
+                    // Destroy the fullscreen chart instance
+                    if (fullscreenPerformanceChart) {
+                        fullscreenPerformanceChart.destroy();
+                        fullscreenPerformanceChart = null;
+                    }
+                    // Re-initialize the main chart to ensure it's correctly rendered
+                    initializeChart('performanceChart', companySelect.value);
+                }
+            }
+
+            exitFullscreenMobileButton.addEventListener('click', () => {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { /* Firefox */
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE/Edge */
+                    document.msExitFullscreen();
+                }
+            });
+
+            // --- Trading Logic ---
+            buyButton.addEventListener('click', () => simulateTrade('buy'));
+            sellButton.addEventListener('click', () => simulateTrade('sell'));
+
+            function simulateTrade(type) {
+                const hasMadeDeposit = localStorage.getItem('hasMadeDeposit') === 'true';
+                let portfolio = getPortfolio();
+
+                if (!hasMadeDeposit || portfolio.currentBalance <= 0) {
+                    alertMessage('Please deposit funds to enable trading.', 'error');
+                    return;
+                }
+
+                const amount = parseFloat(tradeAmountInput.value);
+                if (isNaN(amount) || amount <= 0) {
+                    alertMessage('Please enter a valid trade amount.', 'error');
+                    return;
+                }
+
+                const currentCompanyCode = companySelect.value;
+                const companyData = companyChartData[currentCompanyCode];
+                if (!companyData || !performanceChart) {
+                    alertMessage('Please select a company.', 'error');
+                    return;
+                }
+
+                const currentPrice = performanceChart.data.datasets[0].data[performanceChart.data.datasets[0].data.length - 1];
+                if (!currentPrice) {
+                    alertMessage('Could not get current price for trading.', 'error');
+                    return;
+                }
+
+                let tradeResult = null;
+                let profitLoss = 0;
+
+                if (type === 'buy') {
+                    if (portfolio.currentBalance < amount) {
+                        alertMessage('Insufficient funds to place this buy order.', 'error');
+                        return;
+                    }
+                    // Deduct amount from balance
+                    portfolio.currentBalance -= amount;
+
+                    // Simulate a small random immediate profit/loss for the trade itself
+                    const initialChange = (Math.random() * 0.02 - 0.01); // +/- 1% immediate change
+                    profitLoss = amount * initialChange;
+                    portfolio.currentBalance += profitLoss; // Apply immediate P/L to balance
+                    portfolio.dailyPL += profitLoss; // Reflect in daily P&L
+
+                    tradeResult = profitLoss >= 0 ? 'win' : 'loss';
+                    alertMessage(`Bought $${amount.toFixed(2)} of ${currentCompanyCode}. Immediate P/L: $${profitLoss.toFixed(2)}`, profitLoss >= 0 ? 'success' : 'error');
+
+                } else if (type === 'sell') {
+                    // For simplicity, assume user always has 'shares' to sell worth the amount
+                    // In a real app, you'd track owned shares per company
+                    // Add amount back to balance
+                    portfolio.currentBalance += amount;
+
+                    // Simulate a small random immediate profit/loss for the trade itself
+                    const initialChange = (Math.random() * 0.02 - 0.01); // +/- 1% immediate change
+                    profitLoss = amount * initialChange; // Selling also results in P/L based on movement
+                    portfolio.currentBalance += profitLoss; // Apply immediate P/L to balance
+                    portfolio.dailyPL += profitLoss; // Reflect in daily P&L
+
+                    tradeResult = profitLoss >= 0 ? 'win' : 'loss';
+                    alertMessage(`Sold $${amount.toFixed(2)} of ${currentCompanyCode}. Immediate P/L: $${profitLoss.toFixed(2)}`, profitLoss >= 0 ? 'success' : 'error');
+                }
+
+                setPortfolio(portfolio.currentBalance, portfolio.dailyPL, portfolio.winRate, portfolio.totalTrades, portfolio.winningTrades, tradeResult);
+                updateDashboardAnalytics();
+                tradeAmountInput.value = ''; // Clear input
+            }
+
+            // --- Daily Performance Simulation (Money Adding Daily) ---
+            function simulateDailyPerformance() {
+                const hasMadeDeposit = localStorage.getItem('hasMadeDeposit') === 'true';
+                let portfolio = getPortfolio();
+
+                if (!hasMadeDeposit || portfolio.currentBalance <= 0) {
+                    // If no deposit or portfolio is zero, ensure daily P&L is reset for a new 'day'
+                    if (portfolio.dailyPL !== 0 || portfolio.totalTrades > 0) { // Only reset if there was activity
+                         setPortfolio(0, 0, 0, 0, 0); // Reset all portfolio stats
+                         updateDashboardAnalytics();
+                    }
+                    return;
+                }
+
+                const currentCompanyCode = companySelect.value;
+                const companyData = companyChartData[currentCompanyCode];
+
+                if (!companyData || !performanceChart) {
+                    // Cannot simulate without chart data
+                    return;
+                }
+
+                const chartData = performanceChart.data.datasets[0].data;
+                if (chartData.length < 2) { // Need at least 2 points to calculate percentage change
+                    return;
+                }
+
+                // Calculate a daily change based on a recent chart movement average
+                const lastPrice = chartData[chartData.length - 1];
+                const prevPrice = chartData[chartData.length - 2];
+                const percentageChange = (lastPrice - prevPrice) / prevPrice;
+
+                // Apply this percentage change to a portion of the portfolio value
+                // For simplicity, let's say 100% of portfolio value reacts to daily moves for this demo
+                // This means currentBalance acts as the total portfolio value that grows/shrinks
+                const dailyProfitLoss = portfolio.currentBalance * percentageChange * (Math.random() * 0.5 + 0.75); // Add some randomness
+
+                portfolio.currentBalance += dailyProfitLoss;
+                portfolio.dailyPL += dailyProfitLoss; // Accumulate daily P&L
+
+                setPortfolio(portfolio.currentBalance, portfolio.dailyPL, portfolio.winRate, portfolio.totalTrades, portfolio.winningTrades);
+                updateDashboardAnalytics();
+            }
+
+            function startDailyPerformanceSimulation() {
+                if (dailyPerformanceInterval) {
+                    clearInterval(dailyPerformanceInterval); // Clear existing interval if any
+                }
+                // Run daily performance simulation periodically (e.g., every 5 seconds for demo)
+                dailyPerformanceInterval = setInterval(simulateDailyPerformance, 5000);
             }
 
             // Function to switch to dashboard view
@@ -764,6 +1374,9 @@
                     el.classList.add('is-visible');
                 });
                 window.scrollTo(0, 0); // Scroll to top of dashboard
+                updateDashboardAnalytics(); // Update analytics when dashboard is shown
+                toggleChartUpdates(true); // Start chart updates when dashboard is visible
+                startDailyPerformanceSimulation(); // Start daily simulation when dashboard is visible
             }
 
             // Function to switch back to main content view
@@ -771,6 +1384,25 @@
                 dashboardSection.classList.add('hidden');
                 mainContent.classList.remove('hidden');
                 window.scrollTo(0, 0); // Scroll to top of main content
+                toggleChartUpdates(false); // Stop chart updates when leaving dashboard
+                clearInterval(dailyPerformanceInterval); // Stop daily simulation
+                dailyPerformanceInterval = null;
+                // Ensure fullscreen is exited if user logs out while in fullscreen
+                if (document.fullscreenElement) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
+                }
+                 // Reset portfolio values when logging out
+                localStorage.removeItem('userPortfolio');
+                localStorage.removeItem('hasMadeDeposit');
+                updateDashboardAnalytics(); // Refresh display to show zeros
             }
 
             // --- Local Storage User Management ---
@@ -814,6 +1446,15 @@
                 users.push(newUser);
                 localStorage.setItem('users', JSON.stringify(users));
                 localStorage.setItem('loggedInUser', username); // Auto-login after registration
+                localStorage.setItem('hasMadeDeposit', 'false'); // Initialize deposit flag for new user
+                localStorage.setItem('userPortfolio', JSON.stringify({ // Initialize empty portfolio
+                    currentBalance: 0,
+                    dailyPL: 0,
+                    winRate: 0,
+                    lastTradeResult: null,
+                    totalTrades: 0,
+                    winningTrades: 0
+                }));
 
                 alertMessage('Registration successful! Welcome to Nexus.', 'success');
                 hideModal(registerModal);
@@ -842,9 +1483,14 @@
             // Logout button
             logoutButton.addEventListener('click', function() {
                 localStorage.removeItem('loggedInUser'); // Clear logged in user
+                localStorage.removeItem('userPortfolio'); // Clear portfolio data
+                localStorage.removeItem('hasMadeDeposit'); // Reset deposit status
                 alertMessage('You have been logged out.', 'info');
                 showMainContent();
             });
+
+            // Initial update of dashboard analytics when the script loads
+            updateDashboardAnalytics();
         });
     </script>
 </body>
